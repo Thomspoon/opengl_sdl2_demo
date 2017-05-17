@@ -5,7 +5,6 @@ use std::io::prelude::*;
 use std::ptr;
 use std::str;
 
-use super::gl_gen;
 use gl_gen::gl;
 use gl_gen::gl::types::*;
 
@@ -15,7 +14,6 @@ pub struct Shader {
 }
 
 impl Shader {
-
     pub fn from_source<'a>(vertex: &'a str, fragment: &'a str) -> Shader {
 
         let vertex_glsl = File::open(vertex).expect("Could not open vertex path");

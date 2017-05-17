@@ -7,11 +7,10 @@ use shader::Shader;
 #[path="../../gl_gen/mod.rs"]
 mod gl_gen;
 use gl_gen::gl;
+use gl_gen::gl::types::*;
 
-use std::ffi::CString;
 use std::mem;
 use std::ptr;
-use std::str;
 use std::time::Duration;
 
 use sdl2::event::Event;
