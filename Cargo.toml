@@ -1,0 +1,35 @@
+[package]
+name = "opengl_sdl2_demo"
+version = "0.1.0"
+authors = ["Thomspoon <Saturisk@gmail.com>"]
+build = "build.rs"
+
+[dependencies]
+gl = "0.6.0"
+sdl2 = "0.30"
+
+[build-dependencies]
+gl_generator = "0.5.0"
+
+[[bin]]
+name = "rectangle"
+path = "src/bin/hello_triangle/rectangle.rs"
+
+[[bin]]
+name = "two_triangles"
+path = "src/bin/hello_triangle/two_triangles.rs"
+
+[[bin]]
+name = "two_triangles_and_vbo"
+path = "src/bin/hello_triangle/two_triangles_and_vbo.rs"
+
+[[bin]]
+name = "two_triangles_with_shaders"
+path = "src/bin/hello_triangle/two_triangles_with_shaders.rs"
+
+[[bin]]
+name = "uniform"
+path = "src/bin/shaders/uniform.rs"
+[[bin]]
+name = "triangle_vertex_colors"
+path = "src/bin/shaders/triangle_vertex_colors.rs"
