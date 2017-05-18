@@ -79,8 +79,8 @@ fn main() {
 
     let shader = Shader::from_source("src/examples/textures/shader/texture.glslv", "src/examples/textures/shader/texture.glslf");
 
-    let texture_image1 = image::open(&Path::new("src/examples/textures/resources/container.jpg")).unwrap();
-    let texture_image2 = image::open(&Path::new("src/examples/textures/resources/awesomeface.png")).unwrap();
+    let texture_image1 = image::open(&Path::new("resources/container.jpg")).unwrap();
+    let texture_image2 = image::open(&Path::new("resources/awesomeface.png")).unwrap();
 
     unsafe {
         gl::GenVertexArrays(1, &mut vao);
@@ -165,6 +165,7 @@ fn main() {
             gl::ActiveTexture(gl::TEXTURE0);
             gl::BindTexture(gl::TEXTURE_2D, texture1);
             gl::Uniform1i(gl::GetUniformLocation(shader.program(), "ourTexture1".as_ptr() as *const i8), 0);
+            
             gl::ActiveTexture(gl::TEXTURE1);
             gl::BindTexture(gl::TEXTURE_2D, texture2);
             gl::Uniform1i(gl::GetUniformLocation(shader.program(), "ourTexture2".as_ptr() as *const i8), 1);

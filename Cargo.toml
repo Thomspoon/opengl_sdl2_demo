@@ -5,6 +5,7 @@ authors = ["Thomspoon <Saturisk@gmail.com>"]
 build = "build.rs"
 
 [dependencies]
+cgmath = "0.14"
 image = "0.13.0"
 gl = "0.6.0"
 sdl2 = "0.30"
@@ -41,5 +42,9 @@ name = "triangle_exercise_3"
 path = "src/examples/shaders/triangle_exercise_3.rs"
 
 [[example]]
-name = "triangle_texture"
-path = "src/examples/textures/triangle_texture.rs"
+name = "rectangle_texture"
+path = "src/examples/textures/rectangle_texture.rs"
+
+[[example]]
+name = "transformation"
+path = "src/examples/transformations/transformation.rs"

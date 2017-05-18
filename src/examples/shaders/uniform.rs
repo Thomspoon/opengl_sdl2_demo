@@ -195,7 +195,6 @@ fn main() {
             gl::UseProgram(program);
 
             let vertex_color_location = gl::GetUniformLocation(program, "ourColor".as_ptr() as *const i8);
-
             gl::Uniform4f(vertex_color_location, 0.0, ((timer.ticks() % 1500) as f32) / 1500.0, 0.0, 1.0);
 
             gl::BindVertexArray(vao);
