@@ -49,6 +49,10 @@ impl Shader {
         }
     }
 
+    pub fn program(self) -> GLuint {
+        self.program
+    }
+
     fn compile_shader(src: &str, ty: GLenum) -> GLuint {
         let shader;
 

@@ -1,35 +1,45 @@
 [package]
 name = "opengl_sdl2_demo"
-version = "0.1.0"
+version = "0.3.0"
 authors = ["Thomspoon <Saturisk@gmail.com>"]
 build = "build.rs"
 
 [dependencies]
+image = "0.13.0"
 gl = "0.6.0"
 sdl2 = "0.30"
 
 [build-dependencies]
 gl_generator = "0.5.0"
 
-[[bin]]
+[[example]]
 name = "rectangle"
-path = "src/bin/hello_triangle/rectangle.rs"
+path = "src/examples/hello_triangle/rectangle.rs"
 
-[[bin]]
+[[example]]
 name = "two_triangles"
-path = "src/bin/hello_triangle/two_triangles.rs"
+path = "src/examples/hello_triangle/two_triangles.rs"
 
-[[bin]]
+[[example]]
 name = "two_triangles_and_vbo"
-path = "src/bin/hello_triangle/two_triangles_and_vbo.rs"
+path = "src/examples/hello_triangle/two_triangles_and_vbo.rs"
 
-[[bin]]
+[[example]]
 name = "two_triangles_with_shaders"
-path = "src/bin/hello_triangle/two_triangles_with_shaders.rs"
+path = "src/examples/hello_triangle/two_triangles_with_shaders.rs"
 
-[[bin]]
+[[example]]
 name = "uniform"
-path = "src/bin/shaders/uniform.rs"
-[[bin]]
+path = "src/examples/shaders/uniform.rs"
+
+[[example]]
 name = "triangle_vertex_colors"
-path = "src/bin/shaders/triangle_vertex_colors.rs"
+path = "src/examples/shaders/triangle_vertex_colors.rs"
+
+[[example]]
+name = "triangle_exercise_3"
+path = "src/examples/shaders/triangle_exercise_3.rs"
+
+[[example]]
+name = "triangle_texture"
+path = "src/examples/textures/triangle_texture.rs"

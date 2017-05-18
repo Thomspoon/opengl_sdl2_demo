@@ -7,11 +7,10 @@ use shader::Shader;
 #[path="../../gl_gen/mod.rs"]
 mod gl_gen;
 use gl_gen::gl;
+use gl_gen::gl::types::*;
 
-use std::ffi::CString;
 use std::mem;
 use std::ptr;
-use std::str;
 use std::time::Duration;
 
 use sdl2::event::Event;
@@ -64,7 +63,7 @@ fn main() {
     let mut vao = 0;
     let mut vbo = 0;
 
-    let shader = Shader::from_source("src/bin/shaders/shader/triangle.glslv", "src/bin/shaders/shader/triangle.glslf");
+    let shader = Shader::from_source("src/examples/shaders/shader/triangle-3.glslv", "src/examples/shaders/shader/triangle-3.glslf");
 
     unsafe {
         gl::GenVertexArrays(1, &mut vao);
