@@ -48,3 +48,11 @@ path = "src/examples/textures/rectangle_texture.rs"
 [[example]]
 name = "transformation"
 path = "src/examples/transformations/transformation.rs"
+
+[[example]]
+name = "model_view_matrix"
+path = "src/examples/coordinate_systems/model_view_matrix.rs"
+
+[[example]]
+name = "mvm_more_cubes"
+path = "src/examples/coordinate_systems/mvm_more_cubes.rs"

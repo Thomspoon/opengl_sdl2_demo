@@ -18,7 +18,7 @@ use std::path::Path;
 use std::ptr;
 use std::time::Duration;
 
-use cgmath::{Deg, Matrix, Matrix4, Vector3};
+use cgmath::{Deg, Matrix, Matrix4, perspective, Rad, Vector3};
 
 use image::GenericImage;
 
@@ -35,13 +35,57 @@ fn find_sdl_gl_driver() -> Option<u32> {
     None
 }
 
-// Vertex data
-static VERTEX_DATA: [GLfloat; 32] = [
-    // Positions       // Colors        // Texture Coords
-     0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 1.0,   // Top Right
-     0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 0.0,   // Bottom Right
-    -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 0.0,   // Bottom Left
-    -0.5,  0.5, 0.0,   1.0, 1.0, 0.0,   0.0, 1.0,   // Top Left 
+// // Vertex data
+// static VERTEX_DATA: [GLfloat; 32] = [
+//     // Positions       // Colors        // Texture Coords
+//      0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 1.0,   // Top Right
+//      0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 0.0,   // Bottom Right
+//     -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 0.0,   // Bottom Left
+//     -0.5,  0.5, 0.0,   1.0, 1.0, 0.0,   0.0, 1.0,   // Top Left 
+// ];
+
+static VERTEX_DATA: [GLfloat; 180] = [
+    -0.5, -0.5, -0.5,  0.0, 0.0,
+     0.5, -0.5, -0.5,  1.0, 0.0,
+     0.5,  0.5, -0.5,  1.0, 1.0,
+     0.5,  0.5, -0.5,  1.0, 1.0,
+    -0.5,  0.5, -0.5,  0.0, 1.0,
+    -0.5, -0.5, -0.5,  0.0, 0.0,
+
+    -0.5, -0.5,  0.5,  0.0, 0.0,
+     0.5, -0.5,  0.5,  1.0, 0.0,
+     0.5,  0.5,  0.5,  1.0, 1.0,
+     0.5,  0.5,  0.5,  1.0, 1.0,
+    -0.5,  0.5,  0.5,  0.0, 1.0,
+    -0.5, -0.5,  0.5,  0.0, 0.0,
+
+    -0.5,  0.5,  0.5,  1.0, 0.0,
+    -0.5,  0.5, -0.5,  1.0, 1.0,
+    -0.5, -0.5, -0.5,  0.0, 1.0,
+    -0.5, -0.5, -0.5,  0.0, 1.0,
+    -0.5, -0.5,  0.5,  0.0, 0.0,
+    -0.5,  0.5,  0.5,  1.0, 0.0,
+
+     0.5,  0.5,  0.5,  1.0, 0.0,
+     0.5,  0.5, -0.5,  1.0, 1.0,
+     0.5, -0.5, -0.5,  0.0, 1.0,
+     0.5, -0.5, -0.5,  0.0, 1.0,
+     0.5, -0.5,  0.5,  0.0, 0.0,
+     0.5,  0.5,  0.5,  1.0, 0.0,
+
+    -0.5, -0.5, -0.5,  0.0, 1.0,
+     0.5, -0.5, -0.5,  1.0, 1.0,
+     0.5, -0.5,  0.5,  1.0, 0.0,
+     0.5, -0.5,  0.5,  1.0, 0.0,
+    -0.5, -0.5,  0.5,  0.0, 0.0,
+    -0.5, -0.5, -0.5,  0.0, 1.0,
+
+    -0.5,  0.5, -0.5,  0.0, 1.0,
+     0.5,  0.5, -0.5,  1.0, 1.0,
+     0.5,  0.5,  0.5,  1.0, 0.0,
+     0.5,  0.5,  0.5,  1.0, 0.0,
+    -0.5,  0.5,  0.5,  0.0, 0.0,
+    -0.5,  0.5, -0.5,  0.0, 1.0
 ];
 
 static INDICES_DATA: [GLuint; 6] = [
@@ -82,12 +126,14 @@ fn main() {
     let mut texture1 = 0;
     let mut texture2 = 0;
 
-    let shader = Shader::from_source("src/examples/transformations/shader/transformation.glslv", "src/examples/transformations/shader/transformation.glslf");
+    let shader = Shader::from_source("src/examples/coordinate_systems/shader/model_view_projection.glslv", "src/examples/coordinate_systems/shader/model_view_projection.glslf");
 
     let texture_image1 = image::open(&Path::new("resources/container.jpg")).unwrap();
     let texture_image2 = image::open(&Path::new("resources/awesomeface.png")).unwrap();
 
     unsafe {
+        gl::Enable(gl::DEPTH_TEST);  
+
         gl::GenVertexArrays(1, &mut vao);
         gl::GenBuffers(1, &mut vbo);
         gl::GenBuffers(1, &mut ebo);
@@ -110,15 +156,11 @@ fn main() {
                        gl::STATIC_DRAW);       
 
         // Position attribute
-        gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE, (8 * mem::size_of::<GLfloat>()) as i32, ptr::null());
+        gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE, (5 * mem::size_of::<GLfloat>()) as i32, ptr::null());
         gl::EnableVertexAttribArray(0);
 
-        // Color attribute
-        gl::VertexAttribPointer(1, 3, gl::FLOAT, gl::FALSE, (8 * mem::size_of::<GLfloat>()) as i32, (3 * mem::size_of::<GLfloat>()) as *const _);
-        gl::EnableVertexAttribArray(1);
-
         // Texture attribute
-        gl::VertexAttribPointer(2, 2, gl::FLOAT, gl::FALSE, (8 * mem::size_of::<GLfloat>()) as i32, (6 * mem::size_of::<GLfloat>()) as *const _);
+        gl::VertexAttribPointer(2, 2, gl::FLOAT, gl::FALSE, (5 * mem::size_of::<GLfloat>()) as i32, (3 * mem::size_of::<GLfloat>()) as *const _);
         gl::EnableVertexAttribArray(2); 
         
         gl::BindVertexArray(0);
@@ -177,7 +219,7 @@ fn main() {
         unsafe {
             // Clear the screen to black
             gl::ClearColor(0.2, 0.3, 0.3, 1.0);
-            gl::Clear(gl::COLOR_BUFFER_BIT);
+            gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
             gl::ActiveTexture(gl::TEXTURE0);
             gl::BindTexture(gl::TEXTURE_2D, texture1);
@@ -189,12 +231,23 @@ fn main() {
 
             shader.gl_use();
 
-            let trans = Matrix4::from_translation(Vector3::new(0.5, -0.5, 0.0)) * Matrix4::from_angle_z(Deg((timer.ticks() % 360) as f32));
-            let transform_loc = gl::GetUniformLocation(shader.program(), CString::new("transform").unwrap().as_ptr());
-            gl::UniformMatrix4fv(transform_loc, 1, gl::FALSE, trans.as_ptr());
+            let ticks = (timer.ticks() as f32) / 1000.0;
+
+            let model = Matrix4::from_angle_x(Deg(50.0 * ticks)) * Matrix4::from_angle_y(Deg(50.0 * ticks));
+            let view = Matrix4::from_translation(Vector3::new(0.0, 0.0, -2.0));
+            let projection = perspective(Rad::from(Deg(90.0)), 1.33, 0.1, 100.0);
+
+            let model_loc = gl::GetUniformLocation(shader.program(), CString::new("model").unwrap().as_ptr());
+            gl::UniformMatrix4fv(model_loc, 1, gl::FALSE, model.as_ptr());
+
+            let view_loc = gl::GetUniformLocation(shader.program(), CString::new("view").unwrap().as_ptr());
+            gl::UniformMatrix4fv(view_loc, 1, gl::FALSE, view.as_ptr());
+
+            let projection_loc = gl::GetUniformLocation(shader.program(), CString::new("projection").unwrap().as_ptr());
+            gl::UniformMatrix4fv(projection_loc, 1, gl::FALSE, projection.as_ptr());
 
             gl::BindVertexArray(vao);
-            gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
+            gl::DrawArrays(gl::TRIANGLES, 0, 36);
             gl::BindVertexArray(0);
         }
 
