@@ -79,7 +79,7 @@ static VERTEX_DATA: [GLfloat; 180] = [
     -0.5,  0.5, -0.5,  0.0, 1.0
 ];
 
-static cube_positions: [(f32, f32, f32); 10] = [
+static CUBE_POS: [(f32, f32, f32); 10] = [
   ( 0.0,  0.0,  0.0), 
   ( 2.0,  5.0, -15.0), 
   (-1.5, -2.2, -2.5),  
@@ -234,8 +234,8 @@ fn main() {
             gl::UniformMatrix4fv(projection_loc, 1, gl::FALSE, projection.as_ptr());
 
             gl::BindVertexArray(vao);
-            for i in 0..cube_positions.len() {
-                let model = Matrix4::from_translation(Vector3::new(cube_positions[i].0, cube_positions[i].1, cube_positions[i].2)) 
+            for i in 0..CUBE_POS.len() {
+                let model = Matrix4::from_translation(Vector3::new(CUBE_POS[i].0, CUBE_POS[i].1, CUBE_POS[i].2)) 
                             * Matrix4::from_angle_x(Deg(20.0 * i as f32))
                             * 0.3 * Matrix4::from_angle_y(Deg(20.0 * i as f32)) * 0.5 * Matrix4::from_angle_z(Deg(20.0 * i as f32));
                 gl::UniformMatrix4fv(model_loc, 1, gl::FALSE, model.as_ptr());

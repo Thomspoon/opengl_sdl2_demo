@@ -35,15 +35,6 @@ fn find_sdl_gl_driver() -> Option<u32> {
     None
 }
 
-// // Vertex data
-// static VERTEX_DATA: [GLfloat; 32] = [
-//     // Positions       // Colors        // Texture Coords
-//      0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 1.0,   // Top Right
-//      0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 0.0,   // Bottom Right
-//     -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 0.0,   // Bottom Left
-//     -0.5,  0.5, 0.0,   1.0, 1.0, 0.0,   0.0, 1.0,   // Top Left 
-// ];
-
 static VERTEX_DATA: [GLfloat; 180] = [
     -0.5, -0.5, -0.5,  0.0, 0.0,
      0.5, -0.5, -0.5,  1.0, 0.0,
