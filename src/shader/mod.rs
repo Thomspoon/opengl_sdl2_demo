@@ -15,7 +15,7 @@ pub struct Shader {
 
 impl Shader {
     pub fn from_source<'a>(vertex: &'a str, fragment: &'a str) -> Shader {
-
+        println!("{:?}", vertex);
         let vertex_glsl = File::open(vertex).expect("Could not open vertex path");
         let fragment_glsl = File::open(fragment).expect("Could not open fragment path");
         

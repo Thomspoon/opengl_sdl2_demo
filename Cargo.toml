@@ -60,3 +60,7 @@ path = "src/examples/coordinate_systems/mvm_more_cubes.rs"
 [[example]]
 name = "camera"
 path = "src/examples/camera/camera_view.rs"
+
+[[example]]
+name = "camera_class"
+path = "src/examples/camera/camera_class.rs"
